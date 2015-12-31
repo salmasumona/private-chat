@@ -11,11 +11,9 @@ module.exports = function(io,usernames,showusernames,usersmessages) {
 	    secret: config.JWT_SECRET,
 	    timeout: 15000 // 15 seconds to send the authentication message
 	  	})).on('authenticated', function(socket) {
-		//console.log('hello! ' ,socket.decoded_token);
 		socket.on('adduser', function(username){
 			socket.username = username;
 			usernames[username] = socket.id;
-			console.log(username+"-------"+socket.id);
 			io.sockets.emit('user', usernames);  
 		});
 		// to show all socket connected users
@@ -29,7 +27,6 @@ module.exports = function(io,usernames,showusernames,usersmessages) {
 			delete usernames[socket.username];		
 			delete showusernames[socket.username];		
 			io.sockets.emit('user', usernames);
-			//console.log(usernames[socket.username]);
 			
 		});
 
@@ -49,23 +46,6 @@ module.exports = function(io,usernames,showusernames,usersmessages) {
 				io.to(id).emit('private_chat_history', docs); 
 			});
 		});
-
-		/*// get request and send db stored private message when page load of 
-		socket.on('private_chat_last_user', function(username){
-			
-			var private_chat = dbc.collection('private_chat');		
-			//"_id": -1
-			private_chat.find( { $query: {sender:username}, $orderby: { _id : -1 },$limit:1}  ,function(err,docs){
-				var id  = usernames[username];
-				//if(docs[docs.length-1].to!=undefind || docs[docs.length-1].to!=null ){
-					console.log(docs);
-					io.to(id).emit('private_chat_last_user', docs[0].to); 
-				//}
-				
-			});
-		});*/
-		
-		
 		// get request for private message from one user to another
 		// send response to both sender and receiver
 		socket.on('private message', function (data) {
@@ -73,8 +53,8 @@ module.exports = function(io,usernames,showusernames,usersmessages) {
 			var to = data.to;
 			var id  = usernames[data.to];
 			var sender  = usernames[data.sender];
-			usersmessages.push(data);
-			console.log(usersmessages);
+			/*usersmessages.push(data);
+			console.log(usersmessages);*/
 			io.to(id).emit('pm1', data);	
 			io.to(sender).emit('pm', data);
 			/*setTimeout(function () {
@@ -85,7 +65,6 @@ module.exports = function(io,usernames,showusernames,usersmessages) {
 			}, (1000*60*10));	*/
 			var private_chat = dbc.collection('private_chat');		
 			private_chat.insert(data,function(err,docs){
-				//console.log(docs);
 			});
 					
 		});
