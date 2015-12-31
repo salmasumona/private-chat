@@ -10,3 +10,5 @@ Jsonwebtoken - Used for token based authentication.
 Mongojs - To access MongoDB. 
 
 MongoDB - To store chat history and user information after registration / login. 
+
+# Click here to view <b><a href="https://github.com/salmasumona/private-chat" target="_blank">Source Code</a></b>
