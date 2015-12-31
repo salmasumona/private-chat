@@ -5,13 +5,21 @@ myApp.controller('PrivateChatCtrl',['$scope','$http','$window','$cookieStore','s
 	var loggeduser = $cookieStore.get('username');
 	$scope.to = '';
 	$scope.loggeduser = loggeduser;
-    if(loggeduser == undefined || loggeduser == null){
+	var token = $cookieStore.get('token');	
+    if((loggeduser == undefined || loggeduser == null) && (typeof token === 'undefined')){
     	 $window.location.href = "/index.html";
     }
-    if (loggeduser != undefined || loggeduser != null || loggeduser != ""){
-        //console.log("Welcome again " + loggeduser);
-        //send request to add username for a socket connection
-        socket.emit('adduser', loggeduser);
+    if ((loggeduser != undefined || loggeduser != null || loggeduser != "") && (typeof token !== 'undefined')){
+
+    	socket.on('authenticated', function () {
+    		 //send request to add username for a socket connection
+        	socket.emit('adduser', loggeduser);
+        	$scope.private_chat_history();	
+		});	
+    	 socket.emit('authenticate', {token: token}); 
+
+        console.log("Welcome  " + loggeduser);
+       
         //receive response to add username for a socket connection of request add username
         socket.on('user', function (data) {
 			$scope.users = data;
@@ -19,7 +27,7 @@ myApp.controller('PrivateChatCtrl',['$scope','$http','$window','$cookieStore','s
 		/*$window.onbeforeunload = function (evt) {
 		    socket.emit('removeser', loggeduser);
 		 }*/
-		 var pmLast = $cookieStore.get('pmLast');
+		 var pmLast = $cookieStore.get(loggeduser);
 
 		 $scope.to = pmLast;
 		 $scope.pmLast = pmLast;
@@ -32,7 +40,7 @@ myApp.controller('PrivateChatCtrl',['$scope','$http','$window','$cookieStore','s
 		socket.on('private_chat_history', function (data) {
 			$scope.privateMessage = data;
 		});
-		$scope.private_chat_history();	
+		
 		 // request for user list
 		socket.emit('showuser', loggeduser);
 		// response for user list . currently server sending an array where all connected users name are listed
@@ -47,7 +55,7 @@ myApp.controller('PrivateChatCtrl',['$scope','$http','$window','$cookieStore','s
 		// send request for PM
 		
 		$scope.send_message = function(){
-			$cookieStore.put('pmLast', $scope.to);
+			$cookieStore.put(loggeduser, $scope.to);
 			
 			if($scope.private_Message!=''){
 				socket.emit('private message', {sender:$scope.loggeduser,to:$scope.to,textMsg:$scope.private_Message,time:$scope.getDate()});
@@ -59,23 +67,23 @@ myApp.controller('PrivateChatCtrl',['$scope','$http','$window','$cookieStore','s
 		// get response sender and show message to their window
 		socket.on('pm', function (data) {
 			$scope.to =  data.to ;
-			//$scope.privateMessage = [data];				
 			$scope.privateMessage.push(data);
 		});
 		// get response receiver and show message nto their window
 		socket.on('pm1', function (data) {
 			$scope.to =  data.sender ;
-			$scope.private_chat_history();	
+			//$scope.private_chat_history();	
 
 			$scope.privateMessage.push(data);
-			//$scope.privateMessage = $scope.privateMessage;
 		});
     }
     // remove cookie and send request to pop user info from array list
     $scope.logout = function(){
     	var loggeduser = $cookieStore.get('username');
+    	var token = $cookieStore.get('token');
     	socket.emit('removeser', loggeduser);
     	$cookieStore.remove('username', loggeduser);
+    	$cookieStore.remove('token', token);
     	var disconnectuser = $cookieStore.get('username');
     	if (disconnectuser == undefined || disconnectuser == null){
 	        $window.location.href = "/index.html";
