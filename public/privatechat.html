@@ -1,0 +1,98 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" ng-app="privateChat">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <!--[if IE]>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <![endif]-->
+    <title>Private Chat</title>
+    <!-- BOOTSTRAP CORE STYLE CSS -->
+    <link href="assets/css/bootstrap.css" rel="stylesheet" />
+    <script type="text/javascript" src="./socket.io/socket.io.js"></script>
+    <script src="assets/js/angular.min.js"></script>
+    <script src="assets/js/angular-cookies.js"></script>
+   
+    <script src="controllers/private_chat.js"></script>
+    <script src="controllers/services.js"></script>
+
+</head>
+<body style="font-family:Verdana">
+  <div class="container" ng-controller="PrivateChatCtrl">
+<div class="row " style="padding-top:40px;">
+    <h3 class="text-center" >Wellcome - {{loggeduser}}</h3>
+    <br /><br />
+    <div class="col-md-12"><button class="btn btn-info" type="button" ng-click="logout()">Logout</button></div>
+     <div class="col-md-3">
+          <div class="panel panel-primary">
+            <div class="panel-heading">
+               ONLINE USERS
+            </div>
+            <div class="panel-body">
+                <ul class="media-list" ng-repeat="(key,value) in users">
+                                    <li class="media">
+
+                                        <div class="media-body">
+
+                                            <div class="media" ng-if="loggeduser!=key" >
+                                                <a class="pull-left" href="#">
+                                                    <img class="media-object img-circle" style="max-height:40px;" src="assets/img/user-thumb.png" />
+                                                </a>
+                                                <div class="media-body" ng-click="select_user(key)" style="cursor:pointer;" >
+                                                    <h5>{{key}}</h5>
+                                                    
+                                                   <!-- <small class="text-muted">Active From 3 hours</small> -->
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </li>
+ 
+                    </ul>
+                </div>
+            </div>
+        
+    </div>
+    <div class="col-md-8">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                Chat with - {{to}}
+            </div>
+            <div class="panel-body">
+                        <ul class="media-list" ng-repeat="(key, value) in privateMessage"><!-- ng-repeat="msg in privateMessage" ng-show="pmLast==value.sender"-->
+                            <li class="media" >
+                                <div class="media-body">
+                                    <div class="media">
+                                        <a class="pull-left" href="#">
+                                            <img class="media-object img-circle " src="assets/img/user-thumb.png" />
+                                        </a>
+                                         <!--<small class="text-muted">{{value.sender}} | 23rd June at 5:00pm</small>--> 
+                                        <div class="media-body" >
+                                           {{value.textMsg}}
+                                            <br />
+                                           <small class="text-muted">{{value.sender}}  | {{value.time}} </small>
+                                            <hr />
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+            </div>
+            <div class="panel-footer">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Enter Message" ng-model="private_Message" />
+                    <span class="input-group-btn">
+                        <button class="btn btn-info" type="button" ng-click="send_message()">SEND</button>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+   
+</div>
+  </div>
+  
+</body>
+</html>
