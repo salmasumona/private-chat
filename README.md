@@ -1,4 +1,4 @@
-# private-chat using MEAN stack
+# Private-chat using MEAN stack
 
 This project is a simple private chat application using MEAN stack and socket.io for making real-time applications, 
 by this project i have trying to learn some basic concepts of node.js (route, unit test, password encrypt, token based authentication , real-time communication etc ..).
