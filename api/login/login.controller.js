@@ -19,6 +19,7 @@ exports.login = function(req,res){
   var userCollection = dbc.collection('users');
   var token = jwt.sign(req.body.username, config.JWT_SECRET, { expiresIn: 144000 }) ;
   req.body.token = token;
+  console.log(req.body);
   if(req.body.username!="" && req.body.username.length>=4 && req.body.password!=undefined){
     userCollection.find({username:req.body.username},function(err,doc){
 
@@ -34,12 +35,14 @@ exports.login = function(req,res){
         var comparePass = bcrypt.compareSync(req.body.password, doc[0].password);
         if(doc[0].username==req.body.username && !comparePass){
           userCollection.findAndModify({query:{username:req.body.username},update:{$set:{token:token}},new:true},function(err,doc){ 
+              console.log(doc);
           });
           res.json("Exists");
           
         }if(doc[0].username==req.body.username && comparePass /*doc[0].password==req.body.password*/){
           //res.json("Login");
           userCollection.findAndModify({query:{username:req.body.username},update:{$set:{token:token}},new:true},function(err,doc){ 
+              console.log(doc);
           });
           res.json({username:doc[0].username,token:token});        
         }

@@ -1,5 +1,4 @@
 'use strict';
-//var errors = require('./components/errors');
 module.exports = function(io,usernames,showusernames,usersmessages) {
 	var config  = require("./config");
 	var jwt     = require("jsonwebtoken");
@@ -11,6 +10,7 @@ module.exports = function(io,usernames,showusernames,usersmessages) {
 	    secret: config.JWT_SECRET,
 	    timeout: 15000 // 15 seconds to send the authentication message
 	  	})).on('authenticated', function(socket) {
+		
 		socket.on('adduser', function(username){
 			socket.username = username;
 			usernames[username] = socket.id;
@@ -27,7 +27,6 @@ module.exports = function(io,usernames,showusernames,usersmessages) {
 			delete usernames[socket.username];		
 			delete showusernames[socket.username];		
 			io.sockets.emit('user', usernames);
-			
 		});
 
 		// get request and send db stored private message when page load of 
@@ -46,6 +45,7 @@ module.exports = function(io,usernames,showusernames,usersmessages) {
 				io.to(id).emit('private_chat_history', docs); 
 			});
 		});
+		
 		// get request for private message from one user to another
 		// send response to both sender and receiver
 		socket.on('private message', function (data) {
@@ -65,6 +65,7 @@ module.exports = function(io,usernames,showusernames,usersmessages) {
 			}, (1000*60*10));	*/
 			var private_chat = dbc.collection('private_chat');		
 			private_chat.insert(data,function(err,docs){
+				//console.log(docs);
 			});
 					
 		});

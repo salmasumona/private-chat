@@ -7,5 +7,4 @@ var router = express.Router();
 
 router.post('/adduser',logincontroller.login);
 
-
 module.exports = router;

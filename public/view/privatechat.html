@@ -10,13 +10,13 @@
         <![endif]-->
     <title>Private Chat</title>
     <!-- BOOTSTRAP CORE STYLE CSS -->
-    <link href="assets/css/bootstrap.css" rel="stylesheet" />
-    <script type="text/javascript" src="./socket.io/socket.io.js"></script>
-    <script src="assets/js/angular.min.js"></script>
-    <script src="assets/js/angular-cookies.js"></script>
+    <link href="../assets/css/bootstrap.css" rel="stylesheet" />
+    <script type="text/javascript" src="../socket.io/socket.io.js"></script>
+    <script src="../assets/js/angular.min.js"></script>
+    <script src="../assets/js/angular-cookies.js"></script>
    
-    <script src="controllers/private_chat.js"></script>
-    <script src="services/socketServices.js"></script>
+    <script src="../controllers/private_chat.js"></script>
+    <script src="../services/socketServices.js"></script>
 
 </head>
 <body style="font-family:Verdana">
@@ -38,7 +38,7 @@
 
                                             <div class="media" ng-if="loggeduser!=key" >
                                                 <a class="pull-left" href="#">
-                                                    <img class="media-object img-circle" style="max-height:40px;" src="assets/img/user-thumb.png" />
+                                                    <img class="media-object img-circle" style="max-height:40px;" src="../assets/img/user-thumb.png" />
                                                 </a>
                                                 <div class="media-body" ng-click="select_user(key)" style="cursor:pointer;" >
                                                     <h5>{{key}}</h5>
@@ -66,7 +66,7 @@
                                 <div class="media-body">
                                     <div class="media">
                                         <a class="pull-left" href="#">
-                                            <img class="media-object img-circle " src="assets/img/user-thumb.png" />
+                                            <img class="media-object img-circle " src="../assets/img/user-thumb.png" />
                                         </a>
                                          <!--<small class="text-muted">{{value.sender}} | 23rd June at 5:00pm</small>--> 
                                         <div class="media-body" >

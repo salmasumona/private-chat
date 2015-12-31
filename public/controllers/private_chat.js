@@ -86,7 +86,7 @@ myApp.controller('PrivateChatCtrl',['$scope','$http','$window','$cookieStore','s
     	$cookieStore.remove('token', token);
     	var disconnectuser = $cookieStore.get('username');
     	if (disconnectuser == undefined || disconnectuser == null){
-	        $window.location.href = "/index.html";
+	        $window.location.href = "/login";
 	    }
     }
     // get date

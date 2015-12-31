@@ -24,7 +24,7 @@ myApp.controller('Logintrl',['$scope','$http','$window','$cookieStore',function(
 									    var users = $cookieStore.get('username');
 									   // alert(users);
 									    if (users != ""){
-									        $window.location.href = "/privatechat.html";
+									        $window.location.href = "/private_chat";
 									    }
 			
 										

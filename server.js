@@ -1,8 +1,8 @@
+'use strict';
 var express = require("express");
 var app 	= express();
 
 var config  = require("./config");
-
 
 var dbc = config.mongoUri;
 var port = config.port;
@@ -19,7 +19,6 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(bodyParser.json());
 require('./routes')(app);
-
 
 http.listen(port);
 //http.listen(process.env.PORT || 3000);
