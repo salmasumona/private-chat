@@ -11,4 +11,3 @@ Mongojs - To access MongoDB.
 
 MongoDB - To store chat history and user information after registration / login. 
 
-# Click here to view <b><a href="http://floating-cove-7182.herokuapp.com/" target="_blank">Demo</a></b>
